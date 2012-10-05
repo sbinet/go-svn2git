@@ -142,9 +142,9 @@ case 4 it references the root of the repo as trunk.
 
 ### Repository Updates ###
 
-As of go-svn2git 2.0 there is a new feature to pull in the latest changes from SVN into your
-git repository created with go-svn2git.  This is a one way sync, but allows you to use svn2git
-as a mirroring tool for your SVN repositories.
+There is a feature to pull in the latest changes from SVN into your
+git repository created with go-svn2git.  This is a one way sync, but
+allows you to use svn2git as a mirroring tool for your SVN repositories.
 
 The command to call is:
 
