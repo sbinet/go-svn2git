@@ -35,9 +35,9 @@ var g_url = ""
 
 // repo models a git repository
 type repo struct {
-	local_branches []string // the list of local branches
+	local_branches  []string // the list of local branches
 	remote_branches []string // the list of remote branches
-	tags []string // the list of svn-tags
+	tags            []string // the list of svn-tags
 }
 
 var g_repo repo
@@ -73,7 +73,7 @@ func git_cmd(cmdargs ...string) []string {
 	if *g_verbose {
 		fmt.Printf(":: running %s\n", strings.Join(cmd.Args, " "))
 	}
-	out,err := cmd.CombinedOutput()
+	out, err := cmd.CombinedOutput()
 	if err != nil {
 		// ignore error
 		return lines
@@ -96,9 +96,9 @@ func is_in_slice(elmt string, slice []string) bool {
 
 func init() {
 	g_repo = repo{
-		local_branches: []string{},
+		local_branches:  []string{},
 		remote_branches: []string{},
-		tags: []string{},
+		tags:            []string{},
 	}
 }
 
@@ -404,7 +404,7 @@ func do_clone() error {
 	if err != nil {
 		return err
 	}
-	
+
 	err = get_branches()
 	if err != nil {
 		return err
@@ -423,10 +423,10 @@ func fix_tags() error {
 		if len(g_repo.tags) == 0 {
 			return
 		}
-		for name,v := range usr {
+		for name, v := range usr {
 			vv := strings.Trim(v, " ")
 			if vv != "" {
-				cmd := exec.Command("git", "config", "--local", name, 
+				cmd := exec.Command("git", "config", "--local", name,
 					strconv.Quote(vv))
 				_ = cmd.Run()
 			} else {
@@ -439,7 +439,7 @@ func fix_tags() error {
 
 	git_cfg := func(k string) (string, error) {
 		cmd := exec.Command("git", "config", "--local", "--get", k)
-		out,err := cmd.CombinedOutput()
+		out, err := cmd.CombinedOutput()
 		if err != nil {
 			// ignore error!
 			return "", nil
@@ -483,8 +483,8 @@ func fix_tags() error {
 		_ = cmd.Run()
 
 		cmd = exec.Command("git", "tag", "-a", "-m",
-			fmt.Sprintf("\"%s\"", subject), 
-			id, 
+			fmt.Sprintf("\"%s\"", subject),
+			id,
 			tag)
 		cmd.Env = os.Environ()
 		cmd.Env = append(cmd.Env, fmt.Sprintf("GIT_COMMITTER_DATE=%s", date))
@@ -555,9 +555,9 @@ func fix_branches() error {
 				return err
 			}
 
-			cmd = exec.Command("git", "rebase", 
-				fmt.Sprintf("remotes/svn/%s",branch),
-				)
+			cmd = exec.Command("git", "rebase",
+				fmt.Sprintf("remotes/svn/%s", branch),
+			)
 			print_cmd(cmd)
 			debug_cmd(cmd)
 			err = cmd.Run()
