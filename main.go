@@ -138,7 +138,7 @@ func main() {
 		fmt.Printf(" tags:     %q\n", *g_tags)
 		fmt.Printf(" authors:  %q\n", *g_authors)
 		fmt.Printf(" root-is-trunk: %v\n", *g_root_is_trunk)
-
+		fmt.Printf(" exclude:  %q\n", *g_exclude)
 	}
 
 	if *g_rebase {
@@ -389,7 +389,24 @@ func do_clone() error {
 		)
 	}
 	if *g_exclude != "" {
-		fmt.Printf("**warning** -exclude 'REGEX' is NOT implemented\n")
+		patterns := []string{}
+		if *g_root_is_trunk {
+			if *g_trunk != "" {
+				patterns = append(patterns, *g_trunk+"[/]")
+			}
+			if *g_tags != "" {
+				patterns = append(patterns, *g_tags+"[/][^/]+[/]")
+			}
+			if *g_branches != "" {
+				patterns = append(patterns, *g_branches+"[/][^/]+[/]")
+			}
+		}
+		regex := fmt.Sprintf("^(?:%s)(?:%s)",
+			strings.Join(patterns, "|"),
+			*g_exclude)
+		cmdargs = append(cmdargs,
+			fmt.Sprintf("--ignore-paths=\"%s\"", regex),
+		)
 	}
 
 	cmd = exec.Command("git", cmdargs...)
