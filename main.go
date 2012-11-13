@@ -105,8 +105,19 @@ func init() {
 	}
 }
 
+func git_svn_usage() {
+	fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
+	fmt.Fprintf(os.Stderr, " %s [options] SVN_URL\n", os.Args[0])
+	flag.PrintDefaults()
+}
+
 func main() {
 	flag.Parse()
+
+	if *g_help {
+		git_svn_usage()
+		os.Exit(1)
+	}
 
 	if *g_root_is_trunk {
 		*g_trunk = ""
@@ -147,7 +158,7 @@ func main() {
 	if *g_rebase {
 		if flag.NArg() > 0 {
 			fmt.Printf("** too many arguments\n")
-			flag.Usage()
+			git_svn_usage()
 			err := verify_working_tree_is_clean()
 			if err != nil {
 				os.Exit(1)
@@ -162,11 +173,12 @@ func main() {
 		case 1:
 			/*noop*/
 		default:
-			fmt.Printf("** too many arguments\n")
+			fmt.Printf("** too many arguments: %v\n", flag.Args())
+			fmt.Printf("** did you pass an option *after* the url ?\n")
 			ok = false
 		}
 		if !ok {
-			flag.Usage()
+			git_svn_usage()
 			os.Exit(1)
 		}
 		g_url = flag.Arg(0)
