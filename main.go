@@ -158,7 +158,8 @@ func main() {
 	if *g_rebase {
 		if flag.NArg() > 0 {
 			fmt.Printf("** too many arguments\n")
-			git_svn_usage()
+			fmt.Printf("** \"%s -rebase\" takes no argument\n", os.Args[0])
+			//git_svn_usage()
 			err := verify_working_tree_is_clean()
 			if err != nil {
 				os.Exit(1)
@@ -178,7 +179,7 @@ func main() {
 			ok = false
 		}
 		if !ok {
-			git_svn_usage()
+			fmt.Printf("** run \"%s -help\" for help\n", os.Args[0])
 			os.Exit(1)
 		}
 		g_url = flag.Arg(0)
