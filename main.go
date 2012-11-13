@@ -14,24 +14,27 @@ import (
 	"github.com/gonuts/iochan"
 )
 
-var g_verbose = flag.Bool("verbose", false, "")
-var g_metadata = flag.Bool("metadata", false, "include metadata in git logs (git-svn-id)")
-var g_no_minimize_url = flag.Bool("no-minimize-url", false, "accept URLs as-is without attempting to connect a higher level directory")
-var g_root_is_trunk = flag.Bool("root-is-trunk", false, "use this if the root level of the repo is equivalent to the trunk and there are no tags or branches")
-var g_rebase = flag.Bool("rebase", false, "instead of cloning a new project, rebase an existing one against SVN")
-var g_username = flag.String("username", "", "username for transports that needs it (http(s), svn)")
-var g_trunk = flag.String("trunk", "trunk", "subpath to trunk from repository URL")
-var g_branches = flag.String("branches", "branches", "subpath to branches from repository URL")
-var g_tags = flag.String("tags", "tags", "subpath to tags from repository URL")
-var g_exclude = flag.String("exclude", "", "regular expression to filter paths when fetching")
-var g_revision = flag.String("revision", "", "start importing from SVN revision START_REV; optionally end at END_REV. e.g. -revision START_REV:END_REV")
+var (
+	g_help            = flag.Bool("help", false, "display help message and exit")
+	g_verbose         = flag.Bool("verbose", false, "")
+	g_metadata        = flag.Bool("metadata", false, "include metadata in git logs (git-svn-id)")
+	g_no_minimize_url = flag.Bool("no-minimize-url", false, "accept URLs as-is without attempting to connect a higher level directory")
+	g_root_is_trunk   = flag.Bool("root-is-trunk", false, "use this if the root level of the repo is equivalent to the trunk and there are no tags or branches")
+	g_rebase          = flag.Bool("rebase", false, "instead of cloning a new project, rebase an existing one against SVN")
+	g_username        = flag.String("username", "", "username for transports that needs it (http(s), svn)")
+	g_trunk           = flag.String("trunk", "trunk", "subpath to trunk from repository URL")
+	g_branches        = flag.String("branches", "branches", "subpath to branches from repository URL")
+	g_tags            = flag.String("tags", "tags", "subpath to tags from repository URL")
+	g_exclude         = flag.String("exclude", "", "regular expression to filter paths when fetching")
+	g_revision        = flag.String("revision", "", "start importing from SVN revision START_REV; optionally end at END_REV. e.g. -revision START_REV:END_REV")
 
-var g_no_trunk = flag.Bool("no-trunk", false, "do not import anything from trunk")
-var g_no_branches = flag.Bool("no-branches", false, "do not import anything from branches")
-var g_no_tags = flag.Bool("no-tags", false, "do not import anything from tags")
-var g_authors = flag.String("authors", "~/.config/go-svn2git/authors", "path to file containing svn-to-git authors mapping")
+	g_no_trunk    = flag.Bool("no-trunk", false, "do not import anything from trunk")
+	g_no_branches = flag.Bool("no-branches", false, "do not import anything from branches")
+	g_no_tags     = flag.Bool("no-tags", false, "do not import anything from tags")
+	g_authors     = flag.String("authors", "$HOME/.config/go-svn2git/authors", "path to file containing svn-to-git authors mapping")
 
-var g_url = ""
+	g_url = ""
+)
 
 // repo models a git repository
 type repo struct {
