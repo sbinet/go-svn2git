@@ -584,7 +584,7 @@ func (ctx *Context) fix_branches() error {
 			continue
 		}
 
-		cmd := exec.Command("git", "branch", "--track", branch,
+		cmd := exec.Command("git", "branch", branch,
 			fmt.Sprintf("remotes/svn/%s", branch))
 		ctx.print_cmd(cmd)
 		ctx.debug_cmd(cmd)
